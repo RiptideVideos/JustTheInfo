@@ -1,0 +1,20 @@
+name: Run Python script every 10 minutes
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # runs every 10 minutes
+  workflow_dispatch:  # allows manual runs too
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Run the Python script
+        run: python story1.py
