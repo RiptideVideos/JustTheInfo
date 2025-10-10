@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Run the Python script
-        run: python backend/story1.py
       - name: Install dependencies
         run: pip install -r requirements.txt
+      - name: Run the Python script
+        run: python backend/story1.py
