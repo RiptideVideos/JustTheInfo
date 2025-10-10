@@ -17,4 +17,4 @@ jobs:
           python-version: 3.11
 
       - name: Run the Python script
-        run: python story1.py
+        run: /backend/python story1.py
