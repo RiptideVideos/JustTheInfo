@@ -20,3 +20,16 @@ jobs:
         run: pip install -r requirements.txt
       - name: Run the Python script
         run: python backend/story1.py
+      - name: Configure Git
+        run: |
+          git config --global user.name "RiptideVideos"
+          git config --global user.email "riptideytvids@gmail.com"
+      - name: Commit updated JSON
+        run: |
+          git add backend/data.json
+          git commit -m "Update story1.json from GitHub Action" || echo "No changes to commit"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
