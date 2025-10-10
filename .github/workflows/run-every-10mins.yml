@@ -30,6 +30,9 @@ jobs:
           git commit -m "Update story1.json from GitHub Action" || echo "No changes to commit"
 
       - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
+        run: git push
+
+      - name: Push changes
+        uses: actions/checkout@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
