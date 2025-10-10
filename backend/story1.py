@@ -2,7 +2,7 @@
 
 import requests
 from bs4 import BeautifulSoup
-from google import genai
+import google.generativeai as genai
 import json
 import os
 
