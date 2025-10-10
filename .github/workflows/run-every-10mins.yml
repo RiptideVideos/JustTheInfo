@@ -2,14 +2,16 @@ name: Run Python script every 10 minutes
 
 on:
   schedule:
-    - cron: "*/10 * * * *"  # runs every 10 minutes
-  workflow_dispatch:  # allows manual runs too
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: true  # ensures git push works with GITHUB_TOKEN
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -18,21 +20,17 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+
       - name: Run the Python script
         run: python backend/story1.py
+
       - name: Configure Git
         run: |
-          git config --global user.name "RiptideVideos"
-          git config --global user.email "riptideytvids@gmail.com"
-      - name: Commit updated JSON
+          git config user.name "RiptideVideos"
+          git config user.email "riptideytvids@gmail.com"
+
+      - name: Commit and push updated JSON
         run: |
           git add backend/data.json
           git commit -m "Update story1.json from GitHub Action" || echo "No changes to commit"
-
-      - name: Push changes
-        run: git push
-
-      - name: Push changes
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true
+          git push
