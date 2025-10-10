@@ -43,11 +43,12 @@ print(old_story)
 
 # 02 Gemini Link in
 
-client = genai.Client(api_key="AIzaSyBf9WqsaSIzcHBcYJd6YpH9-F0dff3rb3M")
+genai.configure(api_key="AIzaSyBf9WqsaSIzcHBcYJd6YpH9-F0dff3rb3M")
 def hl1():
-    response = client.models.generate_content(
-        model="gemini-2.0-flash", contents=f"Using this list provided to you, find an article that is the most relevent today. Make sure it is completly and entirly differnt from this story: {old_story}. THESE TWO STORIES SHOULD BE DIFFERNT!! Then simplify it down to be 1-2 sentence, easy to digest and understandable. ONLY draw from this list and ONLY output the simplifed headline using ZERO MARKDOWN! Here is the list: {headline}"
-)
+    model = genai.GenerativeModel('gemini-2.0-flash')
+    response = model.generate_content(
+        contents=f"Using this list provided to you, find an article that is the most relevent today. Make sure it is completly and entirly differnt from this story: {old_story}. THESE TWO STORIES SHOULD BE DIFFERNT!! Then simplify it down to be 1-2 sentence, easy to digest and understandable. ONLY draw from this list and ONLY output the simplifed headline using ZERO MARKDOWN! Here is the list: {headline}"
+    )
     return response
 head1 = hl1()
 
@@ -72,9 +73,10 @@ print("03 Done!")
 # 04 Identify with gemini
 
 def findLink():
-    response = client.models.generate_content(
-        model="gemini-2.5-flash", contents=f"Based on the headline given find the corrisponding link for it, only give me the link without additional syntax or it will mess up the code i want to do, thanks! Headline: {head1}, Links: {links}. If you cant find the link please output: Error!!"
-)
+    model = genai.GenerativeModel('gemini-2.5-flash')
+    response = model.generate_content(
+        contents=f"Based on the headline given find the corrisponding link for it, only give me the link without additional syntax or it will mess up the code i want to do, thanks! Headline: {head1}, Links: {links}. If you cant find the link please output: Error!!"
+    )
     return response
     
 link = findLink()
@@ -104,10 +106,11 @@ print("05 Done!")
 # 06 Generate Desc
 
 def ds1():
-  response = client.models.generate_content(
-        model="gemini-2.0-flash", contents=f"Based on the headline given and article description create a non-biasased, understandable, and complete yet easy to digest description of the news article. Dont use markdown. Make sure it works with the fact that this is a news site and the headline. Headline: {head1}, Desc: {article_text} If the description isnt an article and just a repeat of the headline output: ERROR!!!. Finally Don't add speculation or questions to the description"
-)   
-  return response
+    model = genai.GenerativeModel('gemini-2.0-flash')
+    response = model.generate_content(
+        contents=f"Based on the headline given and article description create a non-biasased, understandable, and complete yet easy to digest description of the news article. Dont use markdown. Make sure it works with the fact that this is a news site and the headline. Headline: {head1}, Desc: {article_text} If the description isnt an article and just a repeat of the headline output: ERROR!!!. Finally Don't add speculation or questions to the description"
+    )   
+    return response
 
 desc1 = ds1()
 print("06 Done!")
