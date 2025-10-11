@@ -36,4 +36,5 @@ jobs:
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          git push https://$PAT_TOKEN@github.com/RiptideVideos/JustTheInfo.git HEAD:main
+          git push https://$PAT_TOKEN@github.com/RiptideVideos/JustTheInfo.git
+          git push origin main
