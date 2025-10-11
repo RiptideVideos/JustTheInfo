@@ -37,7 +37,7 @@ jobs:
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
-          git remote set-url origin https://$PAT_TOKEN@github.com/RiptideVideos/JustTheInfo.git
+          git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/RiptideVideos/JustTheInfo.git
           git push --set-upstream origin update-story1
 
       - name: Create or update Pull Request
