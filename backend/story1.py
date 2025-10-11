@@ -43,7 +43,13 @@ with open(file_path, 'r') as f:
     data = json.load(f)
 
 old_story = data["story1"]['text']
-print(old_story)
+print(f"Old Story: f{old_story}")
+
+#1.2 Force New Data
+
+from datetime import datetime
+data["story1"]["last_updated"] = datetime.utcnow().isoformat()
+print("1.2 Done!")
 
 # 02 Gemini Link in
 
