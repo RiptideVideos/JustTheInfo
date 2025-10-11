@@ -34,7 +34,9 @@ jobs:
 
       - name: Commit updated JSON
         run: |
-          git checkout -b update-story1 || git checkout update-story1
+          git fetch origin update-story1 || echo "No remote branch yet"
+          git checkout update-story1 || git checkout -b update-story1
+          git pull origin update-story1 --rebase || echo "No changes to pull"
           git add backend/data.json
           git commit -m "Update story1.json from GitHub Action" || echo "No changes to commit"
 
@@ -43,7 +45,7 @@ jobs:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/RiptideVideos/JustTheInfo.git
-          git push --set-upstream origin update-story1
+          git push origin update-story1
 
       - name: Create or update Pull Request
         uses: peter-evans/create-pull-request@v6
