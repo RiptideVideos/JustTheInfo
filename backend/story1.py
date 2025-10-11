@@ -6,7 +6,7 @@ import google.generativeai as genai
 import json
 import os
 print("Current working directory:", os.getcwd())
-print("Expected path:", os.path.exists("backend/data.json"))
+print("Expected path:", os.path.exists("data.json"))
 # 01 Pulling from CNN Lite
 
 try:
@@ -37,7 +37,7 @@ print("01 Done!")
 #01.1 Finding old articles
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(script_dir, "backend/data.json")
+file_path = os.path.join(script_dir, "data.json")
 
 with open(file_path, 'r') as f:
     data = json.load(f)
@@ -62,7 +62,7 @@ print("02 Done!")
 # 03 Link to Json
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(script_dir, "backend/data.json")
+file_path = os.path.join(script_dir, "data.json")
 
 with open(file_path, "r") as f:
     data = json.load(f)
@@ -122,7 +122,7 @@ print("06 Done!")
 # 07 Set Description
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(script_dir, "backend/data.json")
+file_path = os.path.join(script_dir, "data.json")
 
 with open(file_path, "r") as f:
     data = json.load(f)
