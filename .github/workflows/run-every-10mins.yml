@@ -1,13 +1,13 @@
 name: Run Python script every 10 minutes
-permissions:
-  contents: write
-  pull-requests: write
-  
+
 on:
   schedule:
     - cron: "*/10 * * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
   run-script:
     runs-on: ubuntu-latest
@@ -24,6 +24,8 @@ jobs:
 
       - name: Run the Python script
         run: python backend/story1.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Configure Git
         run: |

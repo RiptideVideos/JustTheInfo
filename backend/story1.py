@@ -8,27 +8,30 @@ import os
 
 # 01 Pulling from CNN Lite
 
-response = requests.get('https://lite.cnn.com')
+try:
+    response = requests.get('https://lite.cnn.com', timeout=10)
+    response.raise_for_status()
+except Exception as e:
+    print(f"Error fetching CNN Lite: {e}")
+    exit(1)
 
 soup = BeautifulSoup(response.content, 'html.parser')
 
-headline = []
-content_div = soup.find('div')
-if content_div:
-    for para in content_div.find_all('li'):
-        headline.append(para.text.strip())
-else:
-    print("No article content found.")
+# Extract all headlines (li text)
+headlines = [li.text.strip() for li in soup.find_all('li') if li.text.strip()]
 
-links = []
-content_a = soup.find('div')
-if content_a:
-    for para in content_a.find_all('a'):
-        links.append(para.get('href'))
+# Extract all article links (hrefs that start with "/")
+links = [a.get('href') for a in soup.find_all('a', href=True) if a.get('href').startswith('/')]
+
+if not headlines or not links:
+    print("Warning: Could not find headlines or links.")
 else:
-    print("No link content found.")
+    print(f"Found {len(headlines)} headlines and {len(links)} links.")
+
+# For debugging
+print("Sample headlines:", headlines[:5])
+print("Sample links:", links[:5])
 print("01 Done!")
-print(f"FOR DEBUG: {headline}")
 
 #01.1 Finding old articles
 
@@ -43,11 +46,11 @@ print(old_story)
 
 # 02 Gemini Link in
 
-genai.configure(api_key="AIzaSyBf9WqsaSIzcHBcYJd6YpH9-F0dff3rb3M")
+genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 def hl1():
     model = genai.GenerativeModel('gemini-2.0-flash')
     response = model.generate_content(
-        contents=f"Using this list provided to you, find an article that is the most relevent today. Make sure it is completly and entirly differnt from this story: {old_story}. THESE TWO STORIES SHOULD BE DIFFERNT!! Then simplify it down to be 1-2 sentence, easy to digest and understandable. ONLY draw from this list and ONLY output the simplifed headline using ZERO MARKDOWN! Here is the list: {headline}"
+        contents=f"Using this list provided to you, find an article that is the most relevent today. Make sure it is completly and entirly differnt from this story: {old_story}. THESE TWO STORIES SHOULD BE DIFFERNT!! Then simplify it down to be 1-2 sentence, easy to digest and understandable. ONLY draw from this list and ONLY output the simplifed headline using ZERO MARKDOWN! Here is the list: {headlines}"
     )
     return response
 head1 = hl1()
@@ -65,8 +68,8 @@ with open(file_path, "r") as f:
 
 data["story1"]["headline"] = f"{head1.text}"
 
-with open("backend/data.json", "w") as f:
-    json.dump(data, f , indent=4)
+with open(file_path, "w") as f:
+    json.dump(data, f, indent=4)
 
 print("03 Done!")
 
@@ -116,6 +119,8 @@ desc1 = ds1()
 print("06 Done!")
 
 # 07 Set Description
+print("Updated headline:", data["story1"]["headline"])
+print("Updated description:", data["story1"]["text"][:100])
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(script_dir, "data.json")
@@ -125,7 +130,6 @@ with open(file_path, "r") as f:
 
 data["story1"]["text"] = f"{desc1.text}"
 
-with open("backend/data.json", "w") as f:
-    json.dump(data, f , indent=4)
-
+with open(file_path, "w") as f:
+    json.dump(data, f, indent=4)
 print("07 Done!")
