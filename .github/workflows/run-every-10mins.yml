@@ -32,7 +32,7 @@ jobs:
           git add backend/data.json
           git commit -m "Update story1.json from GitHub Action" || echo "No changes to commit"
 
-      - name: Push changes using PAT
+      - name: Push changes using Fine-Grained PAT
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
