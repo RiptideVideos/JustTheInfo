@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: true  # ensures git push works with GITHUB_TOKEN
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -29,8 +27,13 @@ jobs:
           git config user.name "RiptideVideos"
           git config user.email "riptideytvids@gmail.com"
 
-      - name: Commit and push updated JSON
+      - name: Commit updated JSON
         run: |
           git add backend/data.json
           git commit -m "Update story1.json from GitHub Action" || echo "No changes to commit"
-          git push
+
+      - name: Push changes using PAT
+        env:
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+        run: |
+          git push https://$PAT_TOKEN@github.com/RiptideVideos/JustTheInfo.git HEAD:main
