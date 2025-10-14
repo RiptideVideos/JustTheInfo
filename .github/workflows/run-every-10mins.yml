@@ -1,8 +1,5 @@
 name: Run Python script every 10 minutes
 
-on:
-  schedule:
-    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 permissions:
